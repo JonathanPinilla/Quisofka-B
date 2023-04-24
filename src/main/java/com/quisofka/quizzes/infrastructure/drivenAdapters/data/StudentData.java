@@ -8,15 +8,19 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.UUID;
 
 @Data
 @Document(collection = "students")
 @NoArgsConstructor
 @AllArgsConstructor
+//@RequiredArgsConstructor
 public class StudentData {
 
     @Id
-    private String id;
+    private String id= UUID.randomUUID().toString().substring(0,10);
 
     @NotNull(message = "Name can't be null")
     @NotBlank(message = "Name can't be empty")
@@ -32,11 +36,11 @@ public class StudentData {
     @Indexed(unique = true)
     private String email;
 
-    @NotNull(message = "isAuthorized can't be null")
-    @NotBlank(message = "isAuthorized can't be empty")
+    //@NotNull(message = "isAuthorized can't be null")
+    //@NotBlank(message = "isAuthorized can't be empty")
     private Boolean isAuthorized;
 
     @NotNull(message = "level can't be null")
     @NotBlank(message = "level can't be empty")
-    private enum level {pending, initial, basic, intermediate;}
+    private String level;
 }

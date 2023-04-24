@@ -1,6 +1,10 @@
 package com.quisofka.quizzes.infrastructure.drivenAdapters.config;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.reactivestreams.client.MongoClients;
 import com.quisofka.quizzes.infrastructure.drivenAdapters.data.StudentData;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
@@ -12,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -22,20 +27,8 @@ import java.util.List;
 
 @Configuration
 @EnableMongoRepositories("com.mongodb")
+//@RequiredArgsConstructor
 public class MongoConfig {
-
-    // to do the email uniqued in the DB
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Bean
-    public ApplicationRunner applicationRunner() {
-        return args -> {
-            Index index = new Index();
-            index.named("email_unique_index").on("email", Sort.Direction.ASC).unique();
-            mongoTemplate.indexOps(StudentData.class).ensureIndex(index);
-        };
-    }
 
     @Bean
     public MongoDBSecret dbSecret(@Value("${spring.data.mongodb.uri}") String uri) {

@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class SaveStudent implements Function<Student, Mono<Student>> {
+public class SaveStudentUseCase implements Function<Student, Mono<Student>> {
 
     private final StudentRepository studentRepository;
 

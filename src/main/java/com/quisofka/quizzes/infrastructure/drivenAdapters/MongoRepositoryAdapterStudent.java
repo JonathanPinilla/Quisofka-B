@@ -5,6 +5,8 @@ import com.quisofka.quizzes.domain.model.student.gateways.StudentRepository;
 import com.quisofka.quizzes.infrastructure.drivenAdapters.data.StudentData;
 import lombok.RequiredArgsConstructor;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 

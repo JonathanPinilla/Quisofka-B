@@ -11,6 +11,8 @@ public interface StudentRepository {
 
     Mono<Student> saveStudent(Student student);
 
+    //Mono<Boolean> isFieldUnique(String email);
+
     Mono<Student> updateStudent(String studentId, Student student);
 
     Mono<Void> deleteStudent(String studentId);
