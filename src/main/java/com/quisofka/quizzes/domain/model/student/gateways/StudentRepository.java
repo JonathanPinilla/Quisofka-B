@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 public interface StudentRepository {
 
-    Mono<Student> getStudentById(Student studentId);
+    Mono<Student> getStudentById(String studentId);
 
     Mono<Student> getStudentByEmail(String email);
 
@@ -13,5 +13,5 @@ public interface StudentRepository {
 
     Mono<Student> updateStudent(String studentId, Student student);
 
-    Mono<Void> deleteStudent(Student studentId);
+    Mono<Void> deleteStudent(String studentId);
 }
