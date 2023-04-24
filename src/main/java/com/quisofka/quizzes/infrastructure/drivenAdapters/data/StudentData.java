@@ -22,6 +22,10 @@ public class StudentData {
     @NotBlank(message = "Name can't be empty")
     private String name;
 
+    @NotNull(message = "LastName can't be null")
+    @NotBlank(message = "LastName can't be empty")
+    private String lastName;
+
     @NotNull(message = "Email can't be null")
     @NotBlank(message = "Email can't be empty")
     @Email(message = "Invalid email address")
