@@ -19,8 +19,9 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	//implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
 	implementation group: 'org.reactivecommons.utils', name: 'object-mapper', version: '0.1.0'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

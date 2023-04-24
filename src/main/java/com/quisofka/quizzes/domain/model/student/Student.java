@@ -13,6 +13,6 @@ public class Student {
     private String id;
     private String name;
     private String email;
-    private String isAuthorized;
+    private Boolean isAuthorized;
     private enum level {pending, initial, basic, intermediate;}
 }
