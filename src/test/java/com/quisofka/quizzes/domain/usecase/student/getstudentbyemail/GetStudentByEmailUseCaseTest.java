@@ -50,19 +50,19 @@ class GetStudentByEmailUseCaseTest {
     @Test
     @DisplayName("GetStudentByEmailUseCase_Failed")
     void getStudentByEmail_Failed() {
-        Mockito.when(repository.getStudentByEmail(Mockito.any(String.class)))
-                .thenReturn(Mono.error(new Throwable(Integer.toString(
-                        HttpURLConnection.HTTP_NOT_FOUND))));
+        String studentEmail= "di@gmail.com";
+        Mockito.when(repository.getStudentByEmail(studentEmail))
+                .thenReturn(Mono.error(new IllegalArgumentException("There is not " +
+                        "student with id: " + studentEmail)));
 
-        var result = useCase.apply("di@gmail.com");
+        var result = useCase.apply(studentEmail);
 
         StepVerifier.create(result)
-                .expectErrorMatches(throwable -> throwable != null &&
-                        throwable.getMessage().equals(Integer.toString(
-                                HttpURLConnection.HTTP_NOT_FOUND)))
+                .expectErrorMessage("There is not " +
+                        "student with id: " + studentEmail)
                 .verify();
 
         Mockito.verify(repository, Mockito.times(1))
-                .getStudentByEmail("di@gmail.com");
+                .getStudentByEmail(studentEmail);
     }
 }

@@ -51,17 +51,19 @@ class DeleteStudentUseCaseTest {
     @Test
     @DisplayName("DeleteStudentUseCase_Failed")
     void deleteStudent_Failed() {
-        Mockito.when(repository.deleteStudent(Mockito.any(String.class)))
-                .thenReturn(Mono.error(new Throwable(Integer.toString(HttpURLConnection.HTTP_NOT_FOUND))));
+        String studentId = "1";
+        Mockito.when(repository.deleteStudent(studentId))
+                .thenReturn(Mono.error(new IllegalArgumentException("There is not " +
+                        "student with id: " + studentId)));
 
         var result = useCase.apply("1");
 
         StepVerifier.create(result)
-                .expectErrorMatches(throwable -> throwable != null &&
-                        throwable.getMessage().equals(Integer.toString(HttpURLConnection.HTTP_NOT_FOUND)))
+                .expectErrorMessage("There is not " +
+                        "student with id: " + studentId)
                 .verify();
 
-        Mockito.verify(repository, Mockito.times(1)).deleteStudent("1");
+        Mockito.verify(repository, Mockito.times(1)).deleteStudent(studentId);
     }
 
 

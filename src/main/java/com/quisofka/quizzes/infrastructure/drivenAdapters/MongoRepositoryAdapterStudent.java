@@ -1,5 +1,6 @@
 package com.quisofka.quizzes.infrastructure.drivenAdapters;
 
+import com.mongodb.DuplicateKeyException;
 import com.quisofka.quizzes.domain.model.student.Student;
 import com.quisofka.quizzes.domain.model.student.gateways.StudentRepository;
 import com.quisofka.quizzes.infrastructure.drivenAdapters.data.StudentData;
@@ -35,13 +36,24 @@ public class MongoRepositoryAdapterStudent implements StudentRepository {
                 .map(studentData -> mapper.map(studentData, Student.class));
     }
 
+    /*@Override
+    public Mono<Student> saveStudent(Student student) {
+        return this.repository
+                .save(mapper.map(student, StudentData.class))
+                .switchIfEmpty(Mono.empty())
+                .map(studentData -> mapper.map(studentData, Student.class));
+    }*/
+
     @Override
     public Mono<Student> saveStudent(Student student) {
         return this.repository
                 .save(mapper.map(student, StudentData.class))
                 .switchIfEmpty(Mono.empty())
                 .map(studentData -> mapper.map(studentData, Student.class));
+                //.onErrorMap(DuplicateKeyException.class, throwable -> new RuntimeException("Duplicate student email", throwable));
+                //.onErrorMap();
     }
+
 
     @Override
     public Mono<Student> updateStudent(String studentId, Student student) {

@@ -62,16 +62,15 @@ class UpdateStudentUseCaseTest {
         var updatedStudent = new Student("1", "Diego", "Sanchez",
                 "dps@gmail.com",false,"progress");
 
-        Mockito.when(repository.updateStudent(Mockito.any(String.class), Mockito.any(Student.class)))
-                .thenReturn(Mono.error(new Throwable(Integer.toString(
-                        HttpURLConnection.HTTP_BAD_REQUEST))));
+        Mockito.when(repository.updateStudent("1", updatedStudent))
+                .thenReturn(Mono.error(new IllegalArgumentException("There is not " +
+                        "student with id: " + "1")));
 
         var result = useCase.apply("1", updatedStudent);
 
         StepVerifier.create(result)
-                .expectErrorMatches(throwable -> throwable != null &&
-                        throwable.getMessage().equals(Integer.toString(
-                                HttpURLConnection.HTTP_BAD_REQUEST)))
+                .expectErrorMessage("There is not " +
+                        "student with id: " + "1")
                 .verify();
 
         Mockito.verify(repository, Mockito.times(1))

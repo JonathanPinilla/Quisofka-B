@@ -50,20 +50,22 @@ class GetStudentByIdUseCaseTest {
     @Test
     @DisplayName("GetStudentByIdUseCase_Failed")
     void getStudentById_Failed() {
-        Mockito.when(repository.getStudentById(Mockito.any(String.class)))
-                .thenReturn(Mono.error(new Throwable(Integer.toString(
-                        HttpURLConnection.HTTP_NOT_FOUND))));
 
-        var result = useCase.apply("1");
+        String studentId = "1";
+
+        Mockito.when(repository.getStudentById(studentId))
+                .thenReturn(Mono.error(new IllegalArgumentException("There is not " +
+                        "student with id: " + studentId)));
+
+        var result = useCase.apply(studentId);
 
         StepVerifier.create(result)
-                .expectErrorMatches(throwable -> throwable != null &&
-                        throwable.getMessage().equals(Integer.toString(
-                                HttpURLConnection.HTTP_NOT_FOUND)))
+                .expectErrorMessage("There is not " +
+                        "student with id: " + studentId)
                 .verify();
 
         Mockito.verify(repository, Mockito.times(1))
-                .getStudentById("1");
+                .getStudentById(studentId);
     }
 
 }
