@@ -46,12 +46,17 @@ public class MongoRepositoryAdapterStudent implements StudentRepository {
 
     @Override
     public Mono<Student> saveStudent(Student student) {
-        return this.repository
-                .save(mapper.map(student, StudentData.class))
-                .switchIfEmpty(Mono.empty())
-                .map(studentData -> mapper.map(studentData, Student.class));
-                //.onErrorMap(DuplicateKeyException.class, throwable -> new RuntimeException("Duplicate student email", throwable));
-                //.onErrorMap();
+        return Mono.just(student)
+                .flatMap(student1 -> {
+                    Student student2 = Student.builder()
+                            .name(student1.getName())
+                            .lastName(student1.getLastName())
+                            .email(student1.getEmail())
+                            .isAuthorized(student1.getIsAuthorized())
+                            .level(student1.getLevel())
+                            .build();
+                    return this.repository.save(mapper.map(student2, StudentData.class));
+                }).map(student3 -> mapper.map(student3, Student.class));
     }
 
 
