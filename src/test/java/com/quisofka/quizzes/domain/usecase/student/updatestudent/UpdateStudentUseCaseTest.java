@@ -1,0 +1,80 @@
+package com.quisofka.quizzes.domain.usecase.student.updatestudent;
+
+import com.quisofka.quizzes.domain.model.student.Student;
+import com.quisofka.quizzes.domain.model.student.gateways.StudentRepository;
+import com.quisofka.quizzes.domain.usecase.student.savestudent.SaveStudentUseCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.net.HttpURLConnection;
+
+import static org.junit.jupiter.api.Assertions.*;
+@ExtendWith(MockitoExtension.class)
+
+class UpdateStudentUseCaseTest {
+
+    @Mock
+    StudentRepository repository;
+
+    UpdateStudentUseCase useCase;
+
+    @BeforeEach
+    void setUp() {
+        useCase = new UpdateStudentUseCase(repository);
+    }
+
+    @Test
+    @DisplayName("UpdateStudentUseCase_Success")
+    void UpdateStudent() {
+        var originalStudent = new Student("1", "Diego", "Sanchez",
+                "di@gmail.com",true,"initial");
+
+        var updatedStudent = new Student("1", "Diego", "Sanchez",
+                "dps@gmail.com",false,"progress");
+
+        Mockito.when(repository.updateStudent("1", updatedStudent))
+                .thenReturn(Mono.just(updatedStudent));
+
+        var result = useCase.apply("1", updatedStudent);
+
+        StepVerifier.create(result)
+                .expectNext(updatedStudent)
+                .expectComplete()
+                .verify();
+
+        Mockito.verify(repository, Mockito.times(1))
+                .updateStudent("1", updatedStudent);
+    }
+
+    @Test
+    @DisplayName("UpdateStudentUseCase_Failed")
+    void UpdateStudent_Failed() {
+        var originalStudent = new Student("1", "Diego", "Sanchez",
+                "di@gmail.com",true,"initial");
+
+        var updatedStudent = new Student("1", "Diego", "Sanchez",
+                "dps@gmail.com",false,"progress");
+
+        Mockito.when(repository.updateStudent(Mockito.any(String.class), Mockito.any(Student.class)))
+                .thenReturn(Mono.error(new Throwable(Integer.toString(
+                        HttpURLConnection.HTTP_BAD_REQUEST))));
+
+        var result = useCase.apply("1", updatedStudent);
+
+        StepVerifier.create(result)
+                .expectErrorMatches(throwable -> throwable != null &&
+                        throwable.getMessage().equals(Integer.toString(
+                                HttpURLConnection.HTTP_BAD_REQUEST)))
+                .verify();
+
+        Mockito.verify(repository, Mockito.times(1))
+                .updateStudent("1", updatedStudent);
+    }
+}
