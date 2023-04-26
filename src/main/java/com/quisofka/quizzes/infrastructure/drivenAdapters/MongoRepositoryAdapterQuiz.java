@@ -42,7 +42,7 @@ public class MongoRepositoryAdapterQuiz implements QuizRepositoryGateway {
         return Mono.just(quiz)
                 .flatMap(quiz1 -> {
                     Quiz quiz2 = Quiz.builder()
-                            .questions(quiz1.getQuestions())
+                            //.questions(quiz1.getQuestions())
                             .studentId(quiz1.getStudentId())
                             .status(Status.GENERATED.name())
                             .build();
