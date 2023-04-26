@@ -14,7 +14,7 @@ import java.util.Map;
 public class Quiz {
 
     private String id;
-    private Map<Question, Boolean> answers;
+    private Map<Question, Boolean> questions;
     private Double score;
     private String studentId;
     private LocalDateTime createdAt;
