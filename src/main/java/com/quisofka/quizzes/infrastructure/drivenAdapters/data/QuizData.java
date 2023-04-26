@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Map;
 
 @Data
@@ -18,7 +19,8 @@ import java.util.Map;
 public class QuizData {
 
     private String id;
-    private Map<Question, Boolean> questions;
+    private Map<String, Boolean> questions;
+    private HashSet<Question> questionList;
     private Double score;
     @NotBlank(message="studentId is required")
     @NotNull(message ="studentId is required")

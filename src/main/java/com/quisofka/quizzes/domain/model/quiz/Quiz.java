@@ -4,6 +4,7 @@ import com.quisofka.quizzes.domain.model.question.Question;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Map;
 
 @Getter
@@ -14,7 +15,8 @@ import java.util.Map;
 public class Quiz {
 
     private String id;
-    private Map<Question, Boolean> questions;
+    private Map<String, Boolean> questions;
+    private HashSet<Question> questionList;
     private Double score;
     private String studentId;
     private LocalDateTime createdAt;
